@@ -5,12 +5,9 @@ import gui.view.RPanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.rmi.RemoteException;
 
 import javax.swing.JPanel;
 
-import keba.rmiinterface.KEBADataInterface2;
-import kebaObjects.ChargeInfo;
 import kebaObjects.ChargeObject;
 
 public class ChartController {

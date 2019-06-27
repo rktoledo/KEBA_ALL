@@ -101,13 +101,18 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 		//ChargingObject charging= null;
 		
 		if (this.isConnected){
-			System.out.println("MC: isconnected true");
+			System.out.println("MaCont: isconnected true");
 			this.udpServerStub= serverConnectionController.getServerStub();
+			System.err.println("MaCont: 1");
 			this.serverData= serverConnectionController.getDatabaseStub();
+			System.err.println("MaCont: 2");
 			
 			try {
+				System.err.println("MaCont: 3");
 				this.udpServerStub.addRemoteObserver(this);
+				System.err.println("MaCont: 4");
 				this.chargeObj= this.serverData.getLatestChargeObject();
+				System.err.println("MaCont: 5");
 				//this.chargingData= this.db.getActualCharging();
 				//actualChargeFilePath = chargingData.getChargeFilePath();
 				//charging= fileHandler.getChargingData(actualChargeFilePath);
@@ -116,21 +121,25 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 				e.printStackTrace();
 			}
 			
+			System.err.println("MaCont: 6");
 			this.chargingTableController= new ChargeTableController(this.serverData);
 			this.infoController= new InfoController();
 			this.settingController= new SettingController();
 			this.chartMainController= new ChartMainController(this.chargeObj, true);
 			
+			System.err.println("MaCont: 7");
 			this.chartCard= chartMainController.getChartView();
 			this.chargingCard= chargingTableController.getChargeView();
 			this.infoCard= infoController.getInfoView();
 			this.settingsCard= settingController.getSettingView();
 			
+			System.err.println("MaCont: 8");
 			((MainView)this.mainFrame).setActualCard(chartCard);
 			((MainView)this.mainFrame).setChargeCard(chargingCard);
 			((MainView)this.mainFrame).setInfoCard(infoCard);
 			((MainView)this.mainFrame).setSettingsCard(settingsCard);
 			
+			System.err.println("MaCont: 9");
 			addChargings();
 		}
 		else{
@@ -144,7 +153,7 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 			this.settingController= null;
 			this.chartMainController= null;
 			
-			System.out.println("MC: isconnected false");
+			System.out.println("MaCont: isconnected false");
 			this.chartCard= null;
 			this.chargingCard= null;
 			this.infoCard= null;
@@ -164,7 +173,7 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 		            "Are you sure to close this window?", "Really Closing?", 
 		            JOptionPane.YES_NO_OPTION,
 		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		        	System.out.println("System Exit");
+		        	System.out.println("MaCont: System Exit");
 		        	removeObserver();
 		            System.exit(0);
 		        }
@@ -195,7 +204,7 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 		try {
 			ArrayList<ChargeInfo> chargings= RemoteDatabase.getInstance().getDB().getAllChargings();
 			this.chargingCard.add(chargings);
-			System.out.println("Amount of chargings= " + chargings.size());
+			System.out.println("MaCont: Amount of chargings= " + chargings.size());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -208,16 +217,16 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 	@Override
 	public void update(Object observable, Object updateMsg)
 			throws RemoteException {
-		//System.out.println("MC Received Rem: updateMessage " + updateMsg);
+		System.out.println("MaCont: Received Rem: updateMessage " + updateMsg);
 		
 		if (updateMsg instanceof ChargeObject){
 			ChargeObject chargeObj= (ChargeObject)updateMsg;
 			//Report100 chargeData= charge.getChargingData();
 			//System.out.println("MC Rem obs received ChargeObject for sessionid: " + chargeData.getSessionID());
 			//System.out.println("MC Rem obs received ChargeObject Epres: " + chargeData.getEpres());
-			/*System.out.println("GUIREADY= " + guiReady);
-			System.out.println("chartMainController= " + chartMainController);
-			System.out.println("charge= " + charge);*/
+			/*System.out.println("MaCont: GUIREADY= " + guiReady);
+			System.out.println("MaCont: chartMainController= " + chartMainController);
+			System.out.println("MaCont: charge= " + charge);*/
 			if (chartMainController!=null) chartMainController.updateGUI(chargeObj);
 		}
 		else if (updateMsg instanceof Report100){
@@ -239,13 +248,16 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
 	// local observer "Connection State changes"
 	@Override
 	public void update(Observable obs, Object updateMsg) {
-		System.out.println("updateMsg received= " + updateMsg.getClass());
+		System.out.println("MaCont: updateMsg received= " + updateMsg.getClass());
 		if(updateMsg instanceof ServerConnectionState){
-			System.out.println("update ServerCOnnectionState " + ((ServerConnectionState)updateMsg).getIsConnected());
-			
+			System.out.println("MaCont: update ServerCOnnectionState " + ((ServerConnectionState)updateMsg).getIsConnected());
+			System.out.println("MaCont: Debug update 1");
 			this.isConnected= ((ServerConnectionState)updateMsg).getIsConnected();
+			System.out.println("MaCont: Debug update 2");
 			updateAll();
+			System.out.println("MaCont: Debug update 3");
 			changeView(isConnected);
+			System.out.println("MaCont: Debug update 4");
 			
 			this.serverConnectionController.updateView();
 			this.serverStateController.setUdpServerStub(this.udpServerStub);
@@ -263,15 +275,15 @@ public class MainController extends UnicastRemoteObject implements  RemoteObserv
             String[] boundNames = registry.list();
             for (String name : boundNames)
             {
-            	System.out.println("REGISTRY : " + name);
+            	System.out.println("MaCont: REGISTRY : " + name);
             }
            
             udpServerStub = (KEBAServerInterface) registry.lookup(KEBAServerInterface.SERVICE_NAME);            
             serverData = (KEBADataInterface2) registry.lookup(KEBADataInterface2.SERVICE_NAME);
             fileHandler = (KEBAFileInterface) registry.lookup(KEBAFileInterface.SERVICE_NAME);            
         } catch (Exception e) {
-            System.out.println("Client exception: " + e.getMessage());
-            System.out.println("Server not started");
+            System.out.println("MaCont: Client exception: " + e.getMessage());
+            System.out.println("MaCont: Server not started");
             //TODO Pop up with message "Server not started or reachable" + grey out button
             e.printStackTrace();
         }

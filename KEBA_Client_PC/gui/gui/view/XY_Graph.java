@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import kebaObjects.ChargeData;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -20,7 +18,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-
+import kebaObjects.ChargeData;
 
 public class XY_Graph extends RPanel{
 	private static final long serialVersionUID = 1L;

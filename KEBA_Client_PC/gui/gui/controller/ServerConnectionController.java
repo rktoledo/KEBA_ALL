@@ -51,25 +51,27 @@ public class ServerConnectionController extends Observable {
 	
 	private void connectToServer(){
 		String host = serverSettings.HOSTNAME;
+		System.out.println("SCCont: host to connect= " + host);
         
 		try {        	
             Registry registry = LocateRegistry.getRegistry(host, 1099);
+            System.out.println("SCCont: registry= " + registry.toString());
             
             String[] boundNames = registry.list();
             for (String name : boundNames)
             {
-            	System.out.println("REGISTRY : " + name);
+            	System.out.println("SCCont: REGISTRY : " + name);
             }
            
             udpServerStub = (KEBAServerInterface) registry.lookup(KEBAServerInterface.SERVICE_NAME);            
             db = (KEBADataInterface2) registry.lookup(KEBADataInterface2.SERVICE_NAME);
             isConnected.setIsConnected(true);
         } catch (Exception e) {
-            System.out.println("Client exception: " + e.getMessage());
-            System.out.println("Server not started");
+            System.out.println("SCCont: Client exception: " + e.getMessage());
+            System.out.println("SCCont: Server not started");
             isConnected.setIsConnected(false);
             //TODO Pop up with message "Server not started or reachable" + grey out button
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 	}
 	
@@ -90,17 +92,18 @@ public class ServerConnectionController extends Observable {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("SCCont: Button connect pressed");
 			if (isConnected.getIsConnected()){
 				isConnected.setIsConnected(false);
 				setChanged();
 				notifyObservers(isConnected);
-				System.out.println("Disconnected from Server= " + isConnected);
+				System.out.println("SCCont: Disconnected from Server= " + isConnected);
 			}
 			else {
 				connectToServer();
 				setChanged();
 				notifyObservers(isConnected);
-				System.out.println("Connected to Server= " + isConnected.getIsConnected());
+				System.out.println("SCCont: Connected to Server= " + isConnected.getIsConnected());
 			}
 		}
 	}
