@@ -6,8 +6,8 @@
 	<classpathentry kind="src" path="Strings"/>
 	<classpathentry kind="src" path="FileStorage"/>
 	<classpathentry kind="src" path="UDP"/>
-	<classpathentry kind="lib" path="/home/linaro/Downloads/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar"/>
-	<classpathentry kind="lib" path="/home/linaro/workspace/json-simple-1.1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/KEBA_Interface"/>
+	<classpathentry kind="lib" path="C:/Users/ronpe/Downloads/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ronpe/Downloads/json-simple-1.1.1.jar/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
